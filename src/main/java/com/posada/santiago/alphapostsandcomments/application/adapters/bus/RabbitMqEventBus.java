@@ -5,7 +5,9 @@ import com.posada.santiago.alphapostsandcomments.application.config.RabbitConfig
 import com.posada.santiago.alphapostsandcomments.application.generic.models.GsonEventSerializer;
 import com.posada.santiago.alphapostsandcomments.business.gateways.EventBus;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RabbitMqEventBus implements EventBus {
     private final RabbitTemplate rabbitTemplate;
     private final GsonEventSerializer serializer;
