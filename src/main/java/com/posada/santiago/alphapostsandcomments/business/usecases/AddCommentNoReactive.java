@@ -4,36 +4,30 @@ import co.com.sofka.domain.generic.Command;
 import co.com.sofka.domain.generic.DomainEvent;
 import com.posada.santiago.alphapostsandcomments.business.gateways.RepositoryExample;
 import com.posada.santiago.alphapostsandcomments.domain.Post;
-import com.posada.santiago.alphapostsandcomments.domain.commands.CreatePostCommand;
+import com.posada.santiago.alphapostsandcomments.domain.commands.AddCommentCommand;
 import com.posada.santiago.alphapostsandcomments.domain.values.Author;
+import com.posada.santiago.alphapostsandcomments.domain.values.CommentId;
+import com.posada.santiago.alphapostsandcomments.domain.values.Content;
 import com.posada.santiago.alphapostsandcomments.domain.values.PostId;
-import com.posada.santiago.alphapostsandcomments.domain.values.Title;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CreatePostUseCaseNoReactivo implements UseCaseForCommandNoReactive{
-
-    /**
-     * Mono y Flux
-     * */
+public class AddCommentNoReactive implements UseCaseForCommandNoReactive<AddCommentCommand>{
 
     private RepositoryExample repository;
 
-    public CreatePostUseCaseNoReactivo(RepositoryExample repository) {
+    public AddCommentNoReactive(RepositoryExample repository) {
         this.repository = repository;
     }
 
-
-
     @Override
-    public List<DomainEvent> apply(Command command) {
-        CreatePostCommand createPost = (CreatePostCommand) command;
-        Post post = new Post(PostId.of(createPost.getPostId()),
-                new Title(createPost.getTitle()),
-                new Author(createPost.getAuthor()));
+    public List<DomainEvent> apply(AddCommentCommand command) {
+        List<DomainEvent> events = repository.findByIdNoReactivo(command.getPostId());
+        Post post = Post.from(PostId.of(command.getPostId()), events);
+        post.addAComment(CommentId.of(command.getCommentId()),
+                new Author(command.getAuthor()),
+                new Content(command.getContent()));
         return post.getUncommittedChanges().stream().map(event -> {
             return repository.saveEventNoReactivo(event);
         }).collect(Collectors.toList());
