@@ -10,6 +10,12 @@ public class CreatePostCommand extends Command {
     public CreatePostCommand() {
     }
 
+    public CreatePostCommand(String postId, String author, String title) {
+        this.postId = postId;
+        this.author = author;
+        this.title = title;
+    }
+
     public String getPostId() {
         return postId;
     }

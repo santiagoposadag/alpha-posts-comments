@@ -28,11 +28,12 @@ public class CreatePostUseCase extends UseCaseForCommand<CreatePostCommand> {
         return createPostCommandMono.flatMapIterable(command -> {
             Post post = new Post(PostId.of(command.getPostId()), new Title(command.getTitle()), new Author(command.getPostId()));
             return post.getUncommittedChanges();
-        });
+        }).flatMap(event ->
+                repository.saveEvent(event));
 
                 /*.map(event -> {
             bus.publish(event);
             return event;
-        }).flatMap(event -> repository.saveEvent(event));*/
+        }).*/
     }
 }

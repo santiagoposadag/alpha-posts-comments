@@ -12,6 +12,13 @@ public class AddCommentCommand extends Command {
     public AddCommentCommand() {
     }
 
+    public AddCommentCommand(String postId, String commentId, String author, String content) {
+        this.postId = postId;
+        this.commentId = commentId;
+        this.author = author;
+        this.content = content;
+    }
+
     public String getPostId() {
         return postId;
     }
