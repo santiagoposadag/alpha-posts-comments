@@ -5,9 +5,7 @@ import co.com.sofka.domain.generic.DomainEvent;
 import com.posada.santiago.alphapostsandcomments.business.gateways.RepositoryExample;
 import com.posada.santiago.alphapostsandcomments.domain.Post;
 import com.posada.santiago.alphapostsandcomments.domain.commands.CreatePostCommand;
-import com.posada.santiago.alphapostsandcomments.domain.values.Author;
-import com.posada.santiago.alphapostsandcomments.domain.values.PostId;
-import com.posada.santiago.alphapostsandcomments.domain.values.Title;
+import com.posada.santiago.alphapostsandcomments.domain.values.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,7 +31,10 @@ public class CreatePostUseCaseNoReactivo implements UseCaseForCommandNoReactive{
         CreatePostCommand createPost = (CreatePostCommand) command;
         Post post = new Post(PostId.of(createPost.getPostId()),
                 new Title(createPost.getTitle()),
-                new Author(createPost.getAuthor()));
+                new Author(createPost.getAuthor()),
+                new CommentId(),
+                new Content("content"),
+                new Author("author"));
         return post.getUncommittedChanges().stream().map(event -> {
             return repository.saveEventNoReactivo(event);
         }).collect(Collectors.toList());

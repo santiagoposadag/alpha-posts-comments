@@ -17,10 +17,10 @@ public class Post extends AggregateEvent<PostId> {
 
     protected List<Comment> comments;
 
-    public Post(PostId entityId, Title title, Author author) {
+    public Post(PostId entityId, Title title, Author author,CommentId  commentId, Content comment,Author commentAuthor) {
         super(entityId);
         subscribe(new PostChange(this));
-        appendChange(new PostCreated(title, author)).apply();
+        appendChange(new PostCreated(title, author, commentId, comment, commentAuthor)).apply();
     }
 
     private Post(PostId id){

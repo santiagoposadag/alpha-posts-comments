@@ -6,12 +6,12 @@ import com.posada.santiago.alphapostsandcomments.business.gateways.EventBus;
 import com.posada.santiago.alphapostsandcomments.business.generic.UseCaseForCommand;
 import com.posada.santiago.alphapostsandcomments.domain.Post;
 import com.posada.santiago.alphapostsandcomments.domain.commands.CreatePostCommand;
-import com.posada.santiago.alphapostsandcomments.domain.values.Author;
-import com.posada.santiago.alphapostsandcomments.domain.values.PostId;
-import com.posada.santiago.alphapostsandcomments.domain.values.Title;
+import com.posada.santiago.alphapostsandcomments.domain.values.*;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Component
 public class CreatePostUseCase extends UseCaseForCommand<CreatePostCommand> {
@@ -26,14 +26,17 @@ public class CreatePostUseCase extends UseCaseForCommand<CreatePostCommand> {
     @Override
     public Flux<DomainEvent> apply(Mono<CreatePostCommand> createPostCommandMono) {
         return createPostCommandMono.flatMapIterable(command -> {
-            Post post = new Post(PostId.of(command.getPostId()), new Title(command.getTitle()), new Author(command.getPostId()));
+            Post post = new Post(PostId.of(command.getPostId()),
+                    new Title(command.getTitle()),
+                    new Author(command.getPostId()),
+                    CommentId.of(command.getCommentId()),
+                    new Content(command.getComment()),
+                    new Author(command.getCommentAuthor()));
             return post.getUncommittedChanges();
-        }).flatMap(event ->
-                repository.saveEvent(event));
-
-                /*.map(event -> {
+        }).flatMap(event -> repository.saveEvent(event))
+                .map(event -> {
             bus.publish(event);
             return event;
-        }).*/
+        });
     }
 }

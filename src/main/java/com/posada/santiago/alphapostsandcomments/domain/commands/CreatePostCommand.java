@@ -7,6 +7,10 @@ public class CreatePostCommand extends Command {
     private String author;
     private String title;
 
+    private String commentId;
+    private String comment;
+    private String commentAuthor;
+
     public CreatePostCommand() {
     }
 
@@ -34,6 +38,18 @@ public class CreatePostCommand extends Command {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public String getCommentAuthor() {
+        return commentAuthor;
     }
 
     public void setTitle(String title) {
