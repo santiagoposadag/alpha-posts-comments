@@ -29,12 +29,14 @@ public class EventHandler {
 
         Notification notification = (Notification) mapper.readFromJson(message, Notification.class);
         logger.info(notification.toString());
-        switch (notification.getType()){
-            case "com.posada.santiago.alphapostsandcomments.domain.events.PostCreated":
-                useCase.apply(Mono.just((PostCreated) mapper.readFromJson(notification.getBody(),
-                        Class.forName(notification.getType()))));
-            default:
-                logger.info(String.format("No use case interested in processing the event %s", notification.getBody()));
+        System.out.println(notification.getType());
+        if(notification.getType().equals("com.posada.santiago.alphapostsandcomments.domain.events.PostCreated")){
+            System.out.println("logger");
+            useCase.apply(Mono.just((PostCreated) mapper.readFromJson(notification.getBody(),
+                    Class.forName(notification.getType())))).subscribe();
+        }else{
+            System.out.println("logger no");
+            logger.info("no usecase interested in " + notification.getType());
         }
     }
 }
