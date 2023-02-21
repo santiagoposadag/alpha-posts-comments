@@ -1,6 +1,6 @@
 package com.posada.santiago.alphapostsandcomments.application.adapters.bus;
 
-import com.google.gson.Gson;
+import com.posada.santiago.alphapostsandcomments.application.generic.serializer.JSONMapperImpl;
 
 import java.time.Instant;
 
@@ -22,6 +22,15 @@ public class Notification {
         return type;
     }
 
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "type='" + type + '\'' +
+                ", body='" + body + '\'' +
+                ", instant=" + instant +
+                '}';
+    }
+
     public String getBody() {
         return body;
     }
@@ -31,11 +40,11 @@ public class Notification {
     }
 
     public Notification deserialize(String aSerialization) {
-        return  new Gson().fromJson(aSerialization, Notification.class);
+        return (Notification) new JSONMapperImpl().readFromJson(aSerialization, Notification.class);
     }
 
     public String serialize() {
-        return new Gson().toJson(this);
+        return new JSONMapperImpl().writeToJson(this);
     }
 
     public static Notification from(String aNotification){

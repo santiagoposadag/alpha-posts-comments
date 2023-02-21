@@ -6,7 +6,6 @@ public class CreatePostCommand extends Command {
     private String postId;
     private String author;
     private String title;
-
     private String commentId;
     private String comment;
     private String commentAuthor;

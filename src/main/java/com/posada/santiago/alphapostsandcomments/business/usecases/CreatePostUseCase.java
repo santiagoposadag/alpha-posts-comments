@@ -1,6 +1,7 @@
 package com.posada.santiago.alphapostsandcomments.business.usecases;
 
 import co.com.sofka.domain.generic.DomainEvent;
+import com.posada.santiago.alphapostsandcomments.application.generic.serializer.exceptions.JSONSerilizationException;
 import com.posada.santiago.alphapostsandcomments.business.gateways.DomainEventRepository;
 import com.posada.santiago.alphapostsandcomments.business.gateways.EventBus;
 import com.posada.santiago.alphapostsandcomments.business.generic.UseCaseForCommand;
@@ -10,8 +11,6 @@ import com.posada.santiago.alphapostsandcomments.domain.values.*;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Component
 public class CreatePostUseCase extends UseCaseForCommand<CreatePostCommand> {
@@ -33,10 +32,20 @@ public class CreatePostUseCase extends UseCaseForCommand<CreatePostCommand> {
                     new Content(command.getComment()),
                     new Author(command.getCommentAuthor()));
             return post.getUncommittedChanges();
-        }).flatMap(event -> repository.saveEvent(event))
+        }).flatMap(event -> {
+                    try {
+                        return repository.saveEvent(event);
+                    } catch (JSONSerilizationException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .map(event -> {
-            bus.publish(event);
-            return event;
+                    try {
+                        bus.publish(event);
+                    } catch (JSONSerilizationException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return event;
         });
     }
 }

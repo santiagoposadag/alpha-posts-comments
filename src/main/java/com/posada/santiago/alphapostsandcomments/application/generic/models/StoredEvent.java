@@ -1,6 +1,7 @@
 package com.posada.santiago.alphapostsandcomments.application.generic.models;
 
 import co.com.sofka.domain.generic.DomainEvent;
+import com.posada.santiago.alphapostsandcomments.application.generic.serializer.JSONMapper;
 
 import java.util.Date;
 
@@ -21,10 +22,10 @@ public class StoredEvent {
     }
 
 
-    public static StoredEvent wrapEvent(DomainEvent domainEvent, EventSerializer eventSerializer) {
+    public static StoredEvent wrapEvent(DomainEvent domainEvent, JSONMapper eventSerializer){
         return new StoredEvent(domainEvent.getClass().getCanonicalName(),
                 new Date(),
-                eventSerializer.serialize(domainEvent)
+                eventSerializer.writeToJson(domainEvent)
         );
     }
 
@@ -59,13 +60,14 @@ public class StoredEvent {
     }
 
 
-    public DomainEvent deserializeEvent(EventSerializer eventSerializer) {
-        try {
-            return eventSerializer
-                    .deserialize(this.getEventBody(), Class.forName(this.getTypeName()));
-        } catch (ClassNotFoundException e) {
-            throw new DeserializeException(e.getCause());
+    public DomainEvent deserializeEvent(JSONMapper eventSerializer) {
+        try{
+            return (DomainEvent) eventSerializer
+                    .readFromJson(this.getEventBody(), Class.forName(this.getTypeName()));
+        }catch (ClassNotFoundException e){
+            return null;
         }
+
     }
 
 

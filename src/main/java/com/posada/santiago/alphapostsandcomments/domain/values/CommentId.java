@@ -1,7 +1,7 @@
 package com.posada.santiago.alphapostsandcomments.domain.values;
 
 import co.com.sofka.domain.generic.Identity;
-import com.posada.santiago.alphapostsandcomments.domain.Comment;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class CommentId extends Identity {
     private CommentId(String uuid) {

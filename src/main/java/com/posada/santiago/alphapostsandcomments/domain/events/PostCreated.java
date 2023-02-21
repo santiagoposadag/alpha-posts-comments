@@ -1,21 +1,32 @@
 package com.posada.santiago.alphapostsandcomments.domain.events;
 
 import co.com.sofka.domain.generic.DomainEvent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.posada.santiago.alphapostsandcomments.domain.values.Author;
 import com.posada.santiago.alphapostsandcomments.domain.values.CommentId;
 import com.posada.santiago.alphapostsandcomments.domain.values.Content;
 import com.posada.santiago.alphapostsandcomments.domain.values.Title;
 
 public class PostCreated extends DomainEvent {
-    private final Title title;
-    private final Author author;
+    private  String title;
+    private String author;
 
-    private final CommentId commentId;
-    private final Content comment;
+    private String commentId;
+    private String comment;
 
-    private final Author commentAuthor;
+    private String commentAuthor;
 
-    public PostCreated(Title title, Author author, CommentId commentId, Content comment, Author commentAuthor) {
+    public PostCreated(){
+        super("posada.santiago.postcreated");
+    }
+
+    public PostCreated( String title,
+                        String author,
+                        String commentId,
+                        String comment,
+                        String commentAuthor) {
+
         super("posada.santiago.postcreated");
         this.title = title;
         this.author = author;
@@ -24,23 +35,23 @@ public class PostCreated extends DomainEvent {
         this.commentAuthor = commentAuthor;
     }
 
-    public CommentId getCommentId() {
+    public String getCommentId() {
         return commentId;
     }
 
-    public Content getComment() {
+    public String getComment() {
         return comment;
     }
 
-    public Author getCommentAuthor() {
+    public String getCommentAuthor() {
         return commentAuthor;
     }
 
-    public Title getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public Author getAuthor() {
+    public String getAuthor() {
         return author;
     }
 }

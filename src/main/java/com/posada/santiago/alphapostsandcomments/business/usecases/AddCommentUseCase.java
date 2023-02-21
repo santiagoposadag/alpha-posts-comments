@@ -1,6 +1,7 @@
 package com.posada.santiago.alphapostsandcomments.business.usecases;
 
 import co.com.sofka.domain.generic.DomainEvent;
+import com.posada.santiago.alphapostsandcomments.application.generic.serializer.exceptions.JSONSerilizationException;
 import com.posada.santiago.alphapostsandcomments.business.gateways.DomainEventRepository;
 import com.posada.santiago.alphapostsandcomments.business.gateways.EventBus;
 import com.posada.santiago.alphapostsandcomments.business.generic.UseCaseForCommand;
@@ -34,9 +35,19 @@ public class AddCommentUseCase extends UseCaseForCommand<AddCommentCommand> {
                     post.addAComment(CommentId.of(command.getCommentId()), new Author(command.getAuthor()), new Content(command.getContent()));
                     return post.getUncommittedChanges();
                 }).map(event -> {
-                    bus.publish(event);
+                    try {
+                        bus.publish(event);
+                    } catch (JSONSerilizationException e) {
+                        throw new RuntimeException(e);
+                    }
                     return event;
-                }).flatMap(event -> repository.saveEvent(event))
+                }).flatMap(event -> {
+                    try {
+                        return repository.saveEvent(event);
+                    } catch (JSONSerilizationException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
         );
 
     }

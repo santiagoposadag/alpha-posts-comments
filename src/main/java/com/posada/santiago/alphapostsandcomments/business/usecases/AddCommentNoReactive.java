@@ -1,6 +1,5 @@
 package com.posada.santiago.alphapostsandcomments.business.usecases;
 
-import co.com.sofka.domain.generic.Command;
 import co.com.sofka.domain.generic.DomainEvent;
 import com.posada.santiago.alphapostsandcomments.business.gateways.RepositoryExample;
 import com.posada.santiago.alphapostsandcomments.domain.Post;

@@ -1,10 +1,13 @@
 package com.posada.santiago.alphapostsandcomments.domain.values;
 
 import co.com.sofka.domain.generic.ValueObject;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Content implements ValueObject<String> {
 
-    private final String content;
+    private String content;
+
 
     public Content(String content) {
         this.content = content;

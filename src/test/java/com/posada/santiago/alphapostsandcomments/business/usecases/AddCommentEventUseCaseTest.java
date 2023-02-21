@@ -1,6 +1,7 @@
 package com.posada.santiago.alphapostsandcomments.business.usecases;
 
 import co.com.sofka.domain.generic.DomainEvent;
+import com.posada.santiago.alphapostsandcomments.application.generic.serializer.exceptions.JSONSerilizationException;
 import com.posada.santiago.alphapostsandcomments.business.gateways.DomainEventRepository;
 import com.posada.santiago.alphapostsandcomments.business.gateways.EventBus;
 import com.posada.santiago.alphapostsandcomments.domain.events.CommentAdded;
@@ -21,8 +22,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @ExtendWith(MockitoExtension.class)
 class AddCommentEventUseCaseTest {
@@ -42,16 +41,16 @@ class AddCommentEventUseCaseTest {
     }
 
     @Test
-    void successfulScenario(){
+    void successfulScenario() throws JSONSerilizationException {
         //Arrange
         final String AGGREGATE_ID = "test-post-id";
 
         PostCreated event = new PostCreated(
-                new Title("Test title"),
-                new Author("Test post Author"),
-                CommentId.of("test-comment-id"),
-                new Content("test content"),
-                new Author("test comment author")
+                "Test title",
+                "Test post Author",
+                "test-comment-id",
+                "test content",
+                "test comment author"
         );
         event.setAggregateRootId(AGGREGATE_ID);
 
@@ -68,7 +67,7 @@ class AddCommentEventUseCaseTest {
                 //Assert
                 .expectNextMatches(event1 ->{
                         CommentAdded commentAdded = (CommentAdded) event1;
-                        Assertions.assertEquals(commentAdded.getId().value(), event.getCommentId().value());
+                        Assertions.assertEquals(commentAdded.getId().value(), event.getCommentId());
                         return event1.aggregateRootId().equals(event.aggregateRootId()); })
                 .verifyComplete();
     }

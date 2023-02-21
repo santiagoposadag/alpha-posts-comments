@@ -20,7 +20,7 @@ public class Post extends AggregateEvent<PostId> {
     public Post(PostId entityId, Title title, Author author,CommentId  commentId, Content comment,Author commentAuthor) {
         super(entityId);
         subscribe(new PostChange(this));
-        appendChange(new PostCreated(title, author, commentId, comment, commentAuthor)).apply();
+        appendChange(new PostCreated(title.value(), author.value(), commentId.value(), comment.value(), commentAuthor.value())).apply();
     }
 
     private Post(PostId id){

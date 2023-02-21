@@ -2,6 +2,7 @@ package com.posada.santiago.alphapostsandcomments.application.adapters.repositor
 
 import co.com.sofka.domain.generic.DomainEvent;
 import com.posada.santiago.alphapostsandcomments.application.generic.models.StoredEvent;
+import com.posada.santiago.alphapostsandcomments.application.generic.serializer.JSONMapper;
 import com.posada.santiago.alphapostsandcomments.business.gateways.DomainEventRepository;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,9 +18,9 @@ public class MongoEventStoreRepository implements DomainEventRepository {
 
     private final ReactiveMongoTemplate template;
 
-    private final StoredEvent.EventSerializer eventSerializer;
+    private final JSONMapper eventSerializer;
 
-    public MongoEventStoreRepository(ReactiveMongoTemplate template, StoredEvent.EventSerializer eventSerializer) {
+    public MongoEventStoreRepository(ReactiveMongoTemplate template, JSONMapper eventSerializer) {
         this.template = template;
         this.eventSerializer = eventSerializer;
     }
@@ -33,7 +34,7 @@ public class MongoEventStoreRepository implements DomainEventRepository {
     }
 
     @Override
-    public Mono<DomainEvent> saveEvent(DomainEvent event) {
+    public Mono<DomainEvent> saveEvent(DomainEvent event){
         DocumentEventStored eventStored = new DocumentEventStored();
         eventStored.setAggregateRootId(event.aggregateRootId());
         eventStored.setStoredEvent(StoredEvent.wrapEvent(event, eventSerializer));
