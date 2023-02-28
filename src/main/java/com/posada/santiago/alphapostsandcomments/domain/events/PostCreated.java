@@ -9,7 +9,7 @@ import com.posada.santiago.alphapostsandcomments.domain.values.Content;
 import com.posada.santiago.alphapostsandcomments.domain.values.Title;
 
 public class PostCreated extends DomainEvent {
-    private  String title;
+    private String title;
     private String author;
 
     private String commentId;
