@@ -20,7 +20,7 @@ public class Post extends AggregateEvent<PostId> {
     public Post(PostId entityId, Title title, Author author) {
         super(entityId);
         subscribe(new PostChange(this));
-        appendChange(new PostCreated(title, author)).apply();
+        appendChange(new PostCreated(title.value(), author.value())).apply();
     }
 
     private Post(PostId id){
@@ -38,6 +38,6 @@ public class Post extends AggregateEvent<PostId> {
         Objects.requireNonNull(id);
         Objects.requireNonNull(author);
         Objects.requireNonNull(content);
-        appendChange(new CommentAdded(id, author, content)).apply();
+        appendChange(new CommentAdded(id.value(), author.value(), content.value())).apply();
     }
 }

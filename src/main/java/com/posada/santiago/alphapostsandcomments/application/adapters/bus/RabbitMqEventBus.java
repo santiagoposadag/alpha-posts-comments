@@ -24,7 +24,7 @@ public class RabbitMqEventBus implements EventBus {
                 serializer.serialize(event)
         );
         rabbitTemplate.convertAndSend(
-                RabbitConfig.EXCHANGE, event.type, notification.serialize().getBytes()
+                RabbitConfig.EXCHANGE, "posada.santiago.general", notification.serialize().getBytes()
         );
     }
 

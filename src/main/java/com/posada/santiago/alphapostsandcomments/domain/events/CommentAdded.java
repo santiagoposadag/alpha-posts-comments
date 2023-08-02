@@ -7,27 +7,27 @@ import com.posada.santiago.alphapostsandcomments.domain.values.Content;
 
 public class CommentAdded extends DomainEvent {
 
-    private final CommentId id;
-    private final Author author;
-    private final Content content;
+    private final String id;
+    private final String author;
+    private final String content;
 
 
-    public CommentAdded(CommentId id, Author author, Content content) {
+    public CommentAdded(String id, String author, String content) {
         super("posada.santiago.commentcreated");
         this.id = id;
         this.author = author;
         this.content = content;
     }
 
-    public CommentId getId() {
+    public String getId() {
         return id;
     }
 
-    public Author getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public Content getContent() {
+    public String getContent() {
         return content;
     }
 }

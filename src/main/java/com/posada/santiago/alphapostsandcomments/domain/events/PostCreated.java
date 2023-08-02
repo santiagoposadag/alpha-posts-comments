@@ -5,20 +5,20 @@ import com.posada.santiago.alphapostsandcomments.domain.values.Author;
 import com.posada.santiago.alphapostsandcomments.domain.values.Title;
 
 public class PostCreated extends DomainEvent {
-    private final Title title;
-    private final Author author;
+    private final String title;
+    private final String author;
 
-    public PostCreated(Title title, Author author) {
+    public PostCreated(String title, String author) {
         super("posada.santiago.postcreated");
         this.title = title;
         this.author = author;
     }
 
-    public Title getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public Author getAuthor() {
+    public String getAuthor() {
         return author;
     }
 }
