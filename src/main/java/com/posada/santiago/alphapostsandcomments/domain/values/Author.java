@@ -4,10 +4,21 @@ import co.com.sofka.domain.generic.ValueObject;
 
 public class Author implements ValueObject<String> {
 
-    private final String author;
+    private String author;
 
     public Author(String author) {
         this.author = author;
+    }
+
+    public Author() {
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     @Override
